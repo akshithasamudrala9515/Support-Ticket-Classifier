@@ -1,26 +1,27 @@
 # 🎫 Support Ticket Category Classifier
 
-## Project Overview
+## 📌 Project Overview
 
-This project uses Natural Language Processing (NLP) and Machine Learning to automatically classify customer support tickets into different categories and predict ticket urgency levels.
+This project uses **Natural Language Processing (NLP)** and **Machine Learning** to automatically classify customer support tickets into different categories and predict ticket urgency levels.
 
-The system helps support teams organize customer issues and route tickets to the appropriate department.
-
----
-
-## Features
-
-- Customer support ticket classification
-- Ticket urgency prediction (High / Medium / Low)
-- Text preprocessing and cleaning
-- TF-IDF text feature extraction
-- Logistic Regression machine learning model
-- Keyword-based urgency detection
-- Streamlit web application
+The system helps support teams organize customer issues, identify priority tickets, and route requests to the appropriate department.
 
 ---
 
-## Ticket Categories
+# 🚀 Features
+
+- ✅ Customer support ticket classification
+- ✅ Ticket urgency prediction (High / Medium / Low)
+- ✅ Text preprocessing and cleaning
+- ✅ TF-IDF text feature extraction
+- ✅ Logistic Regression classification model
+- ✅ Keyword-based urgency detection
+- ✅ Interactive Streamlit web application
+- ✅ Customer details and ticket summary dashboard
+
+---
+
+# 📂 Ticket Categories
 
 The model predicts the following support ticket categories:
 
@@ -32,121 +33,180 @@ The model predicts the following support ticket categories:
 
 ---
 
-## Machine Learning Approach
+# 🤖 Machine Learning Approach
 
-### Text Processing
+## Text Processing
 
-The ticket text is processed using:
+Customer ticket descriptions are processed using:
 
 - Lowercase conversion
 - Removal of unwanted characters
 - Text cleaning
 - TF-IDF vectorization
 
-### Classification Model
+## Classification Model
 
-Machine Learning model used:
+Machine Learning algorithm used:
 
-**Logistic Regression**
+### Logistic Regression
 
-The model learns patterns from customer support ticket descriptions and predicts the most suitable category.
-
-### Urgency Prediction
-
-Urgency is predicted using keyword-based rules:
-
-- High urgency keywords:
-  - urgent
-  - critical
-  - not working
-  - cannot access
-  - crash
-
-- Medium urgency keywords:
-  - issue
-  - problem
-  - error
-  - payment
-  - refund
-
-- Low urgency:
-  - General queries and information requests
+The model learns patterns from historical customer support tickets and predicts the most suitable category for a new ticket.
 
 ---
 
-## Technologies Used
+# ⚡ Urgency Prediction
+
+Ticket urgency is predicted using keyword-based rules.
+
+## High Urgency Keywords
+
+Examples:
+
+- urgent
+- critical
+- emergency
+- not working
+- cannot access
+- crash
+- blocked
+
+## Medium Urgency Keywords
+
+Examples:
+
+- issue
+- problem
+- error
+- payment
+- refund
+- transaction
+
+## Low Urgency
+
+General product questions and information requests.
+
+---
+
+# 🛠 Technologies Used
 
 - Python
 - Pandas
 - NumPy
 - Scikit-learn
 - Natural Language Processing (NLP)
-- TF-IDF
+- TF-IDF Vectorization
 - Logistic Regression
 - Streamlit
 
 ---
 
-## Model Performance
+# 📊 Model Performance
 
-The final model performance: 
+The final Logistic Regression model achieved:
 
-## Project Structure
+| Metric | Score |
+|--------|-------|
+| Accuracy | 92% |
+| F1 Score | 92% |
+
+The model performance was evaluated using precision, recall, and F1-score metrics.
+
+---
+
+# 📁 Project Structure
+
+```
 Support-Ticket-Classifier/
 
 │── app.py
+│── Support_Ticket_Classifier.ipynb
+│── customer_support_tickets.csv
 │── ticket_classifier.pkl
 │── tfidf_vectorizer.pkl
 │── requirements.txt
 │── README.md
-│── Support_Ticket_Classifier.ipynb
+
+└── screenshots/
+    │── app_home.png
+    │── prediction_result.png
+```
 
 ---
 
----
+# ▶️ How to Run
 
-## How to Run
+## 1. Clone Repository
 
-### 1. Clone the repository
-
-bash
+```bash
 git clone https://github.com/akshithasamudrala9515/Support-Ticket-Classifier.git
+```
 
-### 2. Install dependencies
+## 2. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-### 3. Run Streamlit application
+## 3. Run Streamlit Application
+
+```bash
 streamlit run app.py
-
+```
 
 ---
 
-## Future Improvements
+# 🖥 Application Features
+
+The Streamlit application provides:
+
+- Customer information input
+- Product/service details
+- Ticket description analysis
+- Automatic category prediction
+- Urgency level detection
+- Generated ticket summary
+
+---
+
+# 🔮 Future Improvements
+
+Possible enhancements:
 
 - Add sentiment analysis
-- Add prediction confidence score
-- Add ticket analytics dashboard
+- Add ticket history tracking
+- Add analytics dashboard
+- Add database integration
 - Deploy application online
+- Improve urgency prediction using ML models
+
 ---
 
-## 👩‍💻 Developed By
+# 👩‍💻 Developed By
 
-**Akshitha Samudrala**
-**computer science and engineering**
-**Project:** Support Ticket Category Classifier
+## Akshitha Samudrala
 
-**Technologies:**  
+**Computer Science and Engineering**
+
+### Project:
+Support Ticket Category Classifier
+
+### Technologies:
+
 NLP | Machine Learning | Streamlit | Python
 
-**Model:**  
+### Model:
+
 Logistic Regression + TF-IDF
 
-## Application Screenshots
+---
 
-### Streamlit Interface
+# 📸 Application Screenshots
 
-![Streamlit Interface](screenshots/app_home.png)
+## Streamlit Interface
 
-### Prediction Example
+![Streamlit Interface](screenshots/app.png)
+
+
+## Prediction Result
 
 ![Prediction Result](screenshots/prediction_result.png)
