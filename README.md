@@ -109,7 +109,7 @@ Support-Ticket-Classifier/
 
 ### 1. Clone the repository
 
-```bash
+bash
 git clone https://github.com/akshithasamudrala9515/Support-Ticket-Classifier.git
 
 ### 2. Install dependencies
