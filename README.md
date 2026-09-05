@@ -10,14 +10,14 @@ The system helps support teams organize incoming customer issues and improve res
 
 ## Features
 
-- Customer support ticket classification
-- Automatic ticket category prediction
-- Urgency prediction (High / Medium / Low)
-- Text preprocessing and cleaning
-- TF-IDF text feature extraction
-- Machine Learning based classification
-- Streamlit interactive web application
+## Features
 
+- Customer ticket classification
+- Ticket urgency prediction (High / Medium / Low)
+- TF-IDF text feature extraction
+- LinearSVC machine learning model
+- Rule-based ticket priority handling
+- Streamlit web application
 ---
 
 ## Ticket Categories
