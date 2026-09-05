@@ -3,26 +3,130 @@ import pickle
 import re
 
 
-# Load saved model
+# ---------------- Load Model ----------------
+
 model = pickle.load(
     open("ticket_classifier.pkl", "rb")
 )
 
-# Load TF-IDF vectorizer
 tfidf = pickle.load(
     open("tfidf_vectorizer.pkl", "rb")
 )
 
 
-# Text cleaning function
+# ---------------- Text Cleaning ----------------
+
 def clean_text(text):
+
     text = text.lower()
-    text = re.sub(r'[^a-z\s]', '', text)
-    text = re.sub(r'\s+', ' ', text).strip()
+
+    text = re.sub(
+        r'[^a-z0-9\s]',
+        '',
+        text
+    )
+
+    text = re.sub(
+        r'\s+',
+        ' ',
+        text
+    ).strip()
+
     return text
 
 
-# Urgency prediction
+
+# ---------------- Category Correction ----------------
+def adjust_category(category, text):
+
+    text = text.lower()
+
+
+    product_keywords = [
+        "details",
+        "features",
+        "availability",
+        "available",
+        "specifications",
+        "specs",
+        "information",
+        "compare",
+        "recommend",
+        "price",
+        "buy",
+        "purchase"
+    ]
+
+
+    technical_keywords = [
+        "crash",
+        "crashing",
+        "not boot",
+        "boot failure",
+        "system failure",
+        "hardware",
+        "software error",
+        "blue screen",
+        "device not working",
+        "cannot access files",
+        "lost files",
+        "computer stopped",
+        "laptop stopped",
+        "system not working"
+    ]
+
+
+    refund_keywords = [
+        "refund",
+        "return my money",
+        "money back",
+        "return"
+    ]
+
+
+    billing_keywords = [
+        "charged",
+        "payment",
+        "transaction",
+        "billing",
+        "deducted",
+        "double charge"
+    ]
+
+
+    cancellation_keywords = [
+        "cancel",
+        "cancellation",
+        "stop order"
+    ]
+
+
+    # Product inquiry first
+    if any(word in text for word in product_keywords):
+        return "Product inquiry"
+
+
+    if any(word in text for word in technical_keywords):
+        return "Technical issue"
+
+
+    if any(word in text for word in refund_keywords):
+        return "Refund request"
+
+
+    if any(word in text for word in billing_keywords):
+        return "Billing inquiry"
+
+
+    if any(word in text for word in cancellation_keywords):
+        return "Cancellation request"
+
+
+    return category
+
+
+
+# ---------------- Urgency Prediction ----------------
 
 def predict_urgency(text):
 
@@ -36,8 +140,16 @@ def predict_urgency(text):
         "emergency",
         "cannot use",
         "not working",
-        "blocked",
+        "stopped working",
+        "crash",
+        "crashing",
+        "system failure",
         "lost access",
+        "cannot access",
+        "cannot access files",
+        "data loss",
+        "lost files",
+        "blocked",
         "multiple charges"
     ]
 
@@ -52,42 +164,39 @@ def predict_urgency(text):
         "deducted",
         "refund",
         "transaction",
-        "billing"
+        "billing",
+        "slow"
     ]
 
 
     for word in high_keywords:
+
         if word in text:
             return "High"
 
 
     for word in medium_keywords:
+
         if word in text:
             return "Medium"
 
 
     return "Low"
-    
-
-    for word in high_keywords:
-        if word in text:
-            return "High"
-
-    for word in medium_keywords:
-        if word in text:
-            return "Medium"
-
-    return "Low"
 
 
 
-# ---------------- UI ----------------
+# ---------------- Streamlit UI ----------------
 
-st.title("🎫 Support Ticket Category Classifier")
+
+st.title(
+    "🎫 Support Ticket Category Classifier"
+)
+
 
 st.write(
-    "Enter a customer support ticket and get the predicted category and urgency."
+    "Enter a customer support ticket and get predicted category and urgency."
 )
+
 
 
 ticket = st.text_area(
@@ -95,39 +204,59 @@ ticket = st.text_area(
 )
 
 
+
 if st.button("Predict"):
+
 
     if ticket.strip():
 
+
         # Clean text
+
         cleaned_ticket = clean_text(ticket)
 
 
-        # Convert text to TF-IDF
+        # Convert to TF-IDF
+
         vector = tfidf.transform(
             [cleaned_ticket]
         )
 
 
-        # Predict category
+        # Model prediction
+
         category = model.predict(
             vector
         )[0]
 
 
-        # Predict urgency
-        urgency = predict_urgency(ticket)
+        # Apply correction rules
+
+        category = adjust_category(
+            category,
+            ticket
+        )
+
+
+        # Urgency
+
+        urgency = predict_urgency(
+            ticket
+        )
 
 
         st.success(
             f"Predicted Category: {category}"
         )
 
+
         st.warning(
             f"Urgency Level: {urgency}"
         )
 
+
     else:
+
         st.error(
             "Please enter a ticket description"
         )

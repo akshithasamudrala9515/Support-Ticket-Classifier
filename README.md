@@ -2,19 +2,27 @@
 
 ## Project Overview
 
-This project uses Natural Language Processing (NLP) and Machine Learning to classify customer support tickets into different categories and predict urgency levels.
+This project uses Natural Language Processing (NLP) and Machine Learning to automatically classify customer support tickets into different categories and predict ticket urgency levels.
+
+The system helps support teams organize incoming customer issues and improve response efficiency.
+
+---
 
 ## Features
 
-- Customer ticket classification
+- Customer support ticket classification
+- Automatic ticket category prediction
 - Urgency prediction (High / Medium / Low)
+- Text preprocessing and cleaning
 - TF-IDF text feature extraction
-- Logistic Regression machine learning model
-- Streamlit web application
+- Machine Learning based classification
+- Streamlit interactive web application
+
+---
 
 ## Ticket Categories
 
-The model predicts:
+The model predicts the following categories:
 
 - Billing inquiry
 - Cancellation request
@@ -22,21 +30,76 @@ The model predicts:
 - Refund request
 - Technical issue
 
+---
+
+## Machine Learning Approach
+
+### Text Processing:
+- Text cleaning
+- Lowercase conversion
+- Removal of unwanted characters
+- TF-IDF vectorization with n-grams
+
+### Model:
+- Linear Support Vector Classifier (LinearSVC)
+
+---
+
 ## Technologies Used
 
 - Python
 - Pandas
 - NumPy
 - Scikit-learn
-- NLP
+- Natural Language Processing (NLP)
+- TF-IDF
 - Streamlit
+
+---
 
 ## Model Performance
 
-Accuracy: 85.46%
+The final model achieved:
 
-F1 Score: 85.51%
+Model:
+LinearSVC with TF-IDF features
+
+Accuracy:
+93.06%
+
+F1 Score:
+93.17%
+
+Evaluation was performed using a test dataset with multiple support ticket categories.
+
+---
+
+## Project Structure
+Support-Ticket-Classifier/
+
+│── app.py
+│── ticket_classifier.pkl
+│── tfidf_vectorizer.pkl
+│── requirements.txt
+│── README.md
+│── Support_Ticket_Classifier.ipynb
+
+---
 
 ## How to Run
 
-Install dependencies:
+### 1. Clone the repository
+
+### 2. Install dependencies
+
+### 3. Run Streamlit application
+
+
+---
+
+## Future Improvements
+
+- Add sentiment analysis
+- Add prediction confidence score
+- Add ticket analytics dashboard
+- Deploy application online
