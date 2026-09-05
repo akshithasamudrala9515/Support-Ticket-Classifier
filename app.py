@@ -187,21 +187,27 @@ def predict_urgency(text):
 
 # ---------------- Streamlit UI ----------------
 
+st.title("🎫 Support Ticket Category Classifier")
 
-st.title(
-    "🎫 Support Ticket Category Classifier"
+st.caption(
+    "AI-powered NLP system to classify customer support tickets and predict urgency levels"
 )
 
+st.info(
+    "Model: Logistic Regression + TF-IDF"
+)
 
 st.write(
     "Enter a customer support ticket and get predicted category and urgency."
 )
 
 
-
 ticket = st.text_area(
     "Enter Ticket Description"
 )
+
+
+
 
 
 
@@ -260,3 +266,31 @@ if st.button("Predict"):
         st.error(
             "Please enter a ticket description"
         )
+# ---------------- Footer ----------------
+
+# ---------------- Footer ----------------
+
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        text-align: center;
+        padding: 8px;
+        font-size: 12px;
+        border-top: 1px solid #ddd;
+    }
+    </style>
+
+    <div class="footer">
+   <b> <b>Support Ticket Category Classifier</b></b> |
+    Developed by <b>Akshitha Samudrala</b> |
+    NLP • ML • Streamlit
+    </div>
+    """,
+    unsafe_allow_html=True
+)

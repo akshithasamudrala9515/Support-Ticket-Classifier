@@ -127,3 +127,16 @@ streamlit run app.py
 - Add prediction confidence score
 - Add ticket analytics dashboard
 - Deploy application online
+---
+
+## 👩‍💻 Developed By
+
+**Akshitha Samudrala**
+**computer science and engineering**
+**Project:** Support Ticket Category Classifier
+
+**Technologies:**  
+NLP | Machine Learning | Streamlit | Python
+
+**Model:**  
+Logistic Regression + TF-IDF
