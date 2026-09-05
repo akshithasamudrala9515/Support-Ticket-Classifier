@@ -1,27 +1,78 @@
 import streamlit as st
 import pickle
 import re
+from datetime import datetime
+import random
 
 
-# ---------------- Load Model ----------------
+# ---------------- PAGE CONFIG ----------------
+
+st.set_page_config(
+    page_title="Support Ticket Desk",
+    page_icon="🎫",
+    layout="wide"
+)
+
+
+# ---------------- CSS ----------------
+
+st.markdown(
+"""
+<style>
+
+.block-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+
+h1 {
+    text-align:center;
+    font-size:42px;
+}
+
+
+.subtitle {
+    text-align:center;
+    color:gray;
+}
+
+
+.stButton button {
+    width:100%;
+    height:45px;
+    font-size:18px;
+}
+
+
+</style>
+""",
+unsafe_allow_html=True
+)
+
+
+
+# ---------------- LOAD MODEL ----------------
 
 model = pickle.load(
-    open("ticket_classifier.pkl", "rb")
+    open("ticket_classifier.pkl","rb")
 )
+
 
 tfidf = pickle.load(
-    open("tfidf_vectorizer.pkl", "rb")
+    open("tfidf_vectorizer.pkl","rb")
 )
 
 
-# ---------------- Text Cleaning ----------------
+
+# ---------------- TEXT CLEANING ----------------
 
 def clean_text(text):
 
     text = text.lower()
 
     text = re.sub(
-        r'[^a-z0-9\s]',
+        r'[^a-z\s]',
         '',
         text
     )
@@ -36,97 +87,8 @@ def clean_text(text):
 
 
 
-# ---------------- Category Correction ----------------
-def adjust_category(category, text):
 
-    text = text.lower()
-
-
-    product_keywords = [
-        "details",
-        "features",
-        "availability",
-        "available",
-        "specifications",
-        "specs",
-        "information",
-        "compare",
-        "recommend",
-        "price",
-        "buy",
-        "purchase"
-    ]
-
-
-    technical_keywords = [
-        "crash",
-        "crashing",
-        "not boot",
-        "boot failure",
-        "system failure",
-        "hardware",
-        "software error",
-        "blue screen",
-        "device not working",
-        "cannot access files",
-        "lost files",
-        "computer stopped",
-        "laptop stopped",
-        "system not working"
-    ]
-
-
-    refund_keywords = [
-        "refund",
-        "return my money",
-        "money back",
-        "return"
-    ]
-
-
-    billing_keywords = [
-        "charged",
-        "payment",
-        "transaction",
-        "billing",
-        "deducted",
-        "double charge"
-    ]
-
-
-    cancellation_keywords = [
-        "cancel",
-        "cancellation",
-        "stop order"
-    ]
-
-
-    # Product inquiry first
-    if any(word in text for word in product_keywords):
-        return "Product inquiry"
-
-
-    if any(word in text for word in technical_keywords):
-        return "Technical issue"
-
-
-    if any(word in text for word in refund_keywords):
-        return "Refund request"
-
-
-    if any(word in text for word in billing_keywords):
-        return "Billing inquiry"
-
-
-    if any(word in text for word in cancellation_keywords):
-        return "Cancellation request"
-
-
-    return category
-
-
-
-# ---------------- Urgency Prediction ----------------
+# ---------------- URGENCY PREDICTION ----------------
 
 def predict_urgency(text):
 
@@ -134,161 +96,276 @@ def predict_urgency(text):
 
 
     high_keywords = [
+
         "urgent",
-        "immediately",
         "critical",
-        "emergency",
         "cannot use",
         "not working",
-        "stopped working",
+        "blocked",
+        "lost access",
         "crash",
         "crashing",
-        "system failure",
-        "lost access",
-        "cannot access",
-        "cannot access files",
-        "data loss",
-        "lost files",
-        "blocked",
-        "multiple charges"
+        "unable to access",
+        "emergency"
+
     ]
 
 
     medium_keywords = [
-        "problem",
+
         "issue",
+        "problem",
         "error",
         "failed",
         "payment",
         "charged",
-        "deducted",
         "refund",
-        "transaction",
         "billing",
-        "slow"
+        "transaction"
+
     ]
 
 
     for word in high_keywords:
 
         if word in text:
+
             return "High"
+
 
 
     for word in medium_keywords:
 
         if word in text:
+
             return "Medium"
+
 
 
     return "Low"
 
 
 
-# ---------------- Streamlit UI ----------------
 
-st.title("🎫 Support Ticket Category Classifier")
+# ---------------- HEADER ----------------
 
-st.caption(
-    "AI-powered NLP system to classify customer support tickets and predict urgency levels"
+
+st.markdown(
+"""
+<h1>🎫 Support Ticket Category Classifier</h1>
+
+<p class="subtitle">
+AI-powered NLP system to classify customer support tickets
+and predict urgency levels
+</p>
+
+""",
+unsafe_allow_html=True
 )
+
+
 
 st.info(
     "Model: Logistic Regression + TF-IDF"
 )
 
-st.write(
-    "Enter a customer support ticket and get predicted category and urgency."
+
+
+
+# ---------------- CUSTOMER DETAILS ----------------
+
+
+st.subheader(
+    "👤 Customer & Ticket Details"
 )
 
 
-ticket = st.text_area(
-    "Enter Ticket Description"
-)
+
+col1,col2,col3 = st.columns(3)
+
+
+with col1:
+
+    customer_name = st.text_input(
+        "Customer Name"
+    )
+
+
+with col2:
+
+    customer_id = st.text_input(
+        "Customer ID"
+    )
+
+
+with col3:
+
+    product_name = st.text_input(
+        "Product / Service"
+    )
+
+
+
+col4,col5 = st.columns(2)
+
+
+with col4:
+
+    customer_email = st.text_input(
+        "Email Address"
+    )
+
+
+with col5:
+
+    ticket = st.text_area(
+        "Ticket Description",
+        height=100
+    )
 
 
 
 
 
+# ---------------- PREDICT BUTTON ----------------
 
-if st.button("Predict"):
+
+if st.button(
+    "🚀 Predict Ticket"
+):
 
 
     if ticket.strip():
 
 
-        # Clean text
+        cleaned_ticket = clean_text(
+            ticket
+        )
 
-        cleaned_ticket = clean_text(ticket)
-
-
-        # Convert to TF-IDF
 
         vector = tfidf.transform(
             [cleaned_ticket]
         )
 
 
-        # Model prediction
-
         category = model.predict(
             vector
         )[0]
 
-
-        # Apply correction rules
-
-        category = adjust_category(
-            category,
-            ticket
-        )
-
-
-        # Urgency
 
         urgency = predict_urgency(
             ticket
         )
 
 
-        st.success(
-            f"Predicted Category: {category}"
+        ticket_id = (
+
+            "TKT" +
+            str(
+                random.randint(
+                    1000,
+                    9999
+                )
+            )
+
         )
 
 
-        st.warning(
-            f"Urgency Level: {urgency}"
+
+        created_time = datetime.now().strftime(
+            "%d-%m-%Y %H:%M"
         )
 
 
-    else:
 
-        st.error(
-            "Please enter a ticket description"
-        )
-# ---------------- Footer ----------------
+       # ---------------- RESULT ----------------
+# ---------------- RESULT ----------------
 
-# ---------------- Footer ----------------
+st.markdown("---")
+
+st.subheader("📋 Ticket Summary")
+
+
+r1, r2, r3, r4 = st.columns(4)
+
+
+with r1:
+    st.success(
+        f"""
+        🎫
+
+        **Ticket ID**
+
+        {ticket_id}
+        """
+    )
+
+
+with r2:
+    st.info(
+        f"""
+        👤
+
+        **Customer**
+
+        {customer_name}
+        """
+    )
+
+
+with r3:
+    st.success(
+        f"""
+        📌
+
+        **Category**
+
+        {category}
+        """
+    )
+
+
+with r4:
+    st.warning(
+        f"""
+        ⚡
+
+        **Urgency**
+
+        {urgency}
+        """
+    )
+
 
 st.markdown(
-    """
-    <style>
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #f8f9fa;
-        text-align: center;
-        padding: 8px;
-        font-size: 12px;
-        border-top: 1px solid #ddd;
-    }
-    </style>
+    f"""
+    **Product:** {product_name}  
 
-    <div class="footer">
-   Support Ticket Category Classifier | Developed by Akshitha Samudrala | NLP • ML • Streamlit
-    </div>
-    """,
-    unsafe_allow_html=True
+    **Email:** {customer_email}  
+
+    **Status:** Open  
+
+    **Created:** {created_time}
+    """
+)
+
+
+# ---------------- FOOTER ----------------
+
+
+st.markdown(
+"""
+<hr>
+
+<center>
+
+<b>Support Ticket Category Classifier</b><br>
+
+Developed by <b>Akshitha Samudrala</b> |
+NLP • Machine Learning • Streamlit
+
+</center>
+
+""",
+unsafe_allow_html=True
 )
