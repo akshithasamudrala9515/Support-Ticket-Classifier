@@ -6,9 +6,7 @@ This project uses Natural Language Processing (NLP) and Machine Learning to auto
 
 The system helps support teams organize incoming customer issues and improve response efficiency.
 
----
 
-## Features
 
 ## Features
 
