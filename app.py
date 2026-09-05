@@ -287,9 +287,7 @@ st.markdown(
     </style>
 
     <div class="footer">
-   <b> <b>Support Ticket Category Classifier</b></b> |
-    Developed by <b>Akshitha Samudrala</b> |
-    NLP • ML • Streamlit
+   Support Ticket Category Classifier | Developed by Akshitha Samudrala | NLP • ML • Streamlit
     </div>
     """,
     unsafe_allow_html=True

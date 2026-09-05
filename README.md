@@ -140,3 +140,13 @@ NLP | Machine Learning | Streamlit | Python
 
 **Model:**  
 Logistic Regression + TF-IDF
+
+## Application Screenshots
+
+### Streamlit Interface
+
+![Streamlit Interface](screenshots/app_home.png)
+
+### Prediction Example
+
+![Prediction Result](screenshots/prediction_result.png)
