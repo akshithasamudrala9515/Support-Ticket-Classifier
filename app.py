@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 
-# ---------------- CSS ----------------
+# ---------------- CUSTOM CSS ----------------
 
 st.markdown(
 """
@@ -69,7 +69,7 @@ tfidf = pickle.load(
 
 def clean_text(text):
 
-    text = text.lower()
+    text = str(text).lower()
 
     text = re.sub(
         r'[^a-z\s]',
@@ -129,7 +129,6 @@ def predict_urgency(text):
     for word in high_keywords:
 
         if word in text:
-
             return "High"
 
 
@@ -137,12 +136,12 @@ def predict_urgency(text):
     for word in medium_keywords:
 
         if word in text:
-
             return "Medium"
 
 
 
     return "Low"
+
 
 
 
@@ -166,22 +165,22 @@ unsafe_allow_html=True
 
 
 st.info(
-    "Model: Logistic Regression + TF-IDF"
+"Machine Learning Model: Logistic Regression + TF-IDF"
 )
 
 
 
 
-# ---------------- CUSTOMER DETAILS ----------------
+# ---------------- INPUT SECTION ----------------
 
 
 st.subheader(
-    "👤 Customer & Ticket Details"
+"👤 Customer & Ticket Details"
 )
 
 
 
-col1,col2,col3 = st.columns(3)
+col1, col2, col3 = st.columns(3)
 
 
 with col1:
@@ -206,7 +205,7 @@ with col3:
 
 
 
-col4,col5 = st.columns(2)
+col4, col5 = st.columns(2)
 
 
 with col4:
@@ -227,7 +226,7 @@ with col5:
 
 
 
-# ---------------- PREDICT BUTTON ----------------
+# ---------------- PREDICTION ----------------
 
 
 if st.button(
@@ -259,7 +258,6 @@ if st.button(
 
 
         ticket_id = (
-
             "TKT" +
             str(
                 random.randint(
@@ -267,9 +265,7 @@ if st.button(
                     9999
                 )
             )
-
         )
-
 
 
         created_time = datetime.now().strftime(
@@ -278,76 +274,101 @@ if st.button(
 
 
 
-       # ---------------- RESULT ----------------
-# ---------------- RESULT ----------------
-
-st.markdown("---")
-
-st.subheader("📋 Ticket Summary")
+        # ---------------- RESULT ----------------
 
 
-r1, r2, r3, r4 = st.columns(4)
+        st.markdown("---")
 
 
-with r1:
-    st.success(
-        f"""
-        🎫
-
-        **Ticket ID**
-
-        {ticket_id}
-        """
-    )
+        st.subheader(
+            "📋 Ticket Summary"
+        )
 
 
-with r2:
-    st.info(
-        f"""
-        👤
-
-        **Customer**
-
-        {customer_name}
-        """
-    )
+        r1, r2, r3, r4 = st.columns(4)
 
 
-with r3:
-    st.success(
-        f"""
-        📌
 
-        **Category**
+        with r1:
 
-        {category}
-        """
-    )
+            st.success(
+                f"""
+                🎫
 
+                **Ticket ID**
 
-with r4:
-    st.warning(
-        f"""
-        ⚡
-
-        **Urgency**
-
-        {urgency}
-        """
-    )
+                {ticket_id}
+                """
+            )
 
 
-st.markdown(
-    f"""
-    **Product:** {product_name}  
 
-    **Email:** {customer_email}  
+        with r2:
 
-    **Status:** Open  
+            st.info(
+                f"""
+                👤
 
-    **Created:** {created_time}
-    """
-)
+                **Customer**
+
+                {customer_name}
+                """
+            )
+
+
+
+        with r3:
+
+            st.success(
+                f"""
+                📌
+
+                **Category**
+
+                {category}
+                """
+            )
+
+
+
+        with r4:
+
+            st.warning(
+                f"""
+                ⚡
+
+                **Urgency**
+
+                {urgency}
+                """
+            )
+
+
+
+        st.markdown(
+            f"""
+            **Product:** {product_name}  
+
+            **Email:** {customer_email}  
+
+            **Customer ID:** {customer_id}  
+
+            **Status:** Open  
+
+            **Created:** {created_time}
+            """
+        )
+
+
+
+    else:
+
+        st.warning(
+            "Please enter a ticket description before prediction."
+        )
+
+
+
 
 
 # ---------------- FOOTER ----------------
@@ -361,7 +382,8 @@ st.markdown(
 
 <b>Support Ticket Category Classifier</b><br>
 
-Developed by <b>Akshitha Samudrala</b> |
+Developed by <b>Akshitha Samudrala</b><br>
+
 NLP • Machine Learning • Streamlit
 
 </center>
